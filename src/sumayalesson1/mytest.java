@@ -1,7 +1,14 @@
 package sumayalesson1;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WrapsElement;
@@ -41,69 +48,74 @@ public class mytest {
 
 		UserNameInput.sendKeys(UserName);
 		PasswordInput.sendKeys(PassWord);
-		LoginButton.click();   
+		LoginButton.click();
 
 	}
 
-	 @Test(priority = 2)
-	    public void addAllItemsFromTheCart() throws InterruptedException {
-		 List<WebElement> AddToCartButtons = driver.findElements(By.className("btn"));
-		 
-		 for (int i = 0; i < AddToCartButtons.size(); i++) {
-		     AddToCartButtons.get(i).click();
-		     
-		        Thread.sleep(2000);
+	@Test(priority = 2)
+	public void addAllItemsFromTheCart() throws InterruptedException {
+		List<WebElement> AddToCartButtons = driver.findElements(By.className("btn"));
+
+		for (int i = 0; i < AddToCartButtons.size(); i++) {
+			AddToCartButtons.get(i).click();
+
+			Thread.sleep(2000);
+		}
+
+	}
+
+	@Test(priority = 3)
+	public void RemoveAllItems() throws InterruptedException {
+		List<WebElement> RemoveButtons = driver.findElements(By.className("btn_secondary"));
+		for (int i = 0; i < RemoveButtons.size(); i++) {
+			RemoveButtons.get(i).click();
+
+			Thread.sleep(2000);
+		}
+	}
+
+	@Test(priority = 4)
+	public void Task() throws IOException {
+		List<WebElement> ItemsNames = driver.findElements(By.className("inventory_item_name"));
+		String itemName = ItemsNames.get(0).getText();
+		for (int i = 0; i < ItemsNames.size(); i++) {
+
+			System.out.println(itemName.charAt(i));
+
+		}
+		
+		TakesScreenshot ts = (TakesScreenshot) driver;
+
+		File fileOfscreenShot = ts.getScreenshotAs(OutputType.FILE);
+
+		FileUtils.copyFile(fileOfscreenShot, new File("src/ScreenShot/1.jpg"));
 		 }
-		 
-	    }
 
-	 @Test (priority = 3)
-	 public void RemoveAllItems() throws InterruptedException {
-		 List<WebElement> RemoveButtons = driver.findElements(By.className("btn_secondary"));
-		 for (int i = 0; i <RemoveButtons .size(); i++) {
-			 RemoveButtons.get(i).click();
-		     
-			 Thread.sleep(2000);	 }
-	 }
-	 
-	 @Test(priority = 4)
-	 public void Task () {
-		 List<WebElement>ItemsNames = driver.findElements(By.className("inventory_details_name large_size"));
-String itemName = 	ItemsNames.get(0).getText();
-for(int i = 0 ;i<ItemsNames.size();i++) {
+	@Test(enabled = false)
+	public void removeItemFromTheCart() {
+		WebElement BackpackRemoveButton = driver.findElement(By.id("remove-sauce-labs-backpack"));
+		BackpackRemoveButton.click();
+	}
 
-	
-	System.out.println(itemName.charAt(i));
-	
+	@Test(priority = 5, enabled = false)
+	public void logout() throws InterruptedException {
+		WebElement BurgerMenu = driver.findElement(By.id("react-burger-menu-btn"));
+		BurgerMenu.click();
+		Thread.sleep(1000);
 
-	
-}	 
-	 }
-	    @Test(enabled = false)
-	    public void removeItemFromTheCart() {
-	        WebElement BackpackRemoveButton = driver.findElement(By.id("remove-sauce-labs-backpack"));
-	        BackpackRemoveButton.click();
-	    }
+		WebElement logOutButton = driver.findElement(By.id("logout_sidebar_link"));
+		logOutButton.click();
+		Thread.sleep(1000);
 
-	    @Test(priority = 5,enabled = false)
-	    public void logout() throws InterruptedException {
-	        WebElement BurgerMenu = driver.findElement(By.id("react-burger-menu-btn"));
-	        BurgerMenu.click();
-	        Thread.sleep(1000);
+		WebElement Mainlogo = driver.findElement(By.className("login_logo"));
+		System.out.println(Mainlogo.getText());
 
-	        WebElement logOutButton = driver.findElement(By.id("logout_sidebar_link"));
-	        logOutButton.click();
-	        Thread.sleep(1000);
-
-	        WebElement Mainlogo = driver.findElement(By.className("login_logo"));
-	        System.out.println(Mainlogo.getText());
-
-	        WebElement UserNames = driver.findElement(By.id("login_credentials"));
-	        System.out.println(UserNames.getText());
-	    }
+		WebElement UserNames = driver.findElement(By.id("login_credentials"));
+		System.out.println(UserNames.getText());
+	}
 
 //	    @AfterTest
-	    public void myAfterTest() {
-	        driver.quit();
-	    }
+	public void myAfterTest() {
+		driver.quit();
 	}
+}
